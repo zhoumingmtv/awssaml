@@ -10,6 +10,7 @@ from urlparse import urlparse
 import xml.etree.ElementTree as ET
 
 def get_sts(username, password):
+    # If you write an invalid fqdn that ends on mongodb.com it redirects you to www.mongodb.com so the session.get will work but for the wrong page
     idpentryurl = 'https://idp.mongodb.com/simplesaml/saml2/idp/SSOService.php?spentityid=urn:amazon:webservices:ops'
 
     sslverification = True
