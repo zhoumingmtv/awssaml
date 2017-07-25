@@ -14,11 +14,20 @@ def get_sts(username, password):
     idpentryurl = 'https://idp.mongodb.com/simplesaml/saml2/idp/SSOService.php?spentityid=urn:amazon:webservices:ops'
 
     sslverification = True
-
-    with requests.Session() as s:
-        formresponse = s.get(idpentryurl, verify=sslverification)
-    if formresponse.status_code != 200:
-        raise Exception(str(formresponse.reason))
+    
+    # The session object will be needed to get the form and to submit it later
+    session = requests.Session()
+    try:
+        formresponse = session.get(idpentryurl, verify=sslverification)
+    except requests.exceptions.RequestException as e:
+        print("Error: {}").format(e)
+        session.close()
+        sys.exit(1)
+        
+    # with requests.Session() as s:
+    #     formresponse = session.get(idpentryurl, verify=sslverification)
+    # if formresponse.status_code != 200:
+    #     raise Exception(str(formresponse.reason))
 
     idpauthformsubmiturl = formresponse.url
     formsoup = BeautifulSoup(formresponse.text.decode('utf8'), "html.parser")
