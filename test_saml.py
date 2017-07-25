@@ -5,6 +5,7 @@ import boto3
 import re
 import requests
 import sys
+from getpass import getpass
 from bs4 import BeautifulSoup
 from urlparse import urlparse
 import xml.etree.ElementTree as ET
@@ -109,7 +110,8 @@ def get_sts(username, password):
     return token
 
 if __name__ == "__main__":
-    username, password = sys.argv[1], sys.argv[2]
+    username = sys.argv[1]
+    password = getpass()
     token = get_sts(username, password)
     for k, v in iter(token.items()):
         print k, ':', v
