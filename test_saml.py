@@ -104,7 +104,8 @@ def get_sts(username, password):
 
     # Use the assertion to get an AWS STS token using Assume Role with SAML
     client = boto3.client('sts')
-    token = client.assume_role_with_saml(RoleArn=role_arn, PrincipalArn=principal_arn, SAMLAssertion=assertion, DurationSeconds=900)
+    # If DurationSeconds has a higher than 3600 it will raise botocore.exceptions.ClientError (ValidationError)
+    token = client.assume_role_with_saml(RoleArn=role_arn, PrincipalArn=principal_arn, SAMLAssertion=assertion, DurationSeconds=3600)
     return token
 
 if __name__ == "__main__":
